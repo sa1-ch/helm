@@ -1,7 +1,7 @@
 Airflow with LocalExecutor
 
 1. Install mysql and mysqlclient(pymysql)
-2. Change sql_alchemy_conn = <<mysql connection string>> airflow.cfg
+2. Change sql_alchemy_conn = mysql connection string in airflow.cfg
 3. Change executor = LocalExecutor in airflow.cfg.
   
 DAG Info:
