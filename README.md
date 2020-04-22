@@ -54,17 +54,15 @@ create configMap in eks:
 kubectl create configmap fulltrain-config --from-file=<local path of config file>
   
 # sample code to mount the configMap in the dag:
-#volume mount
+
 volume_mount_config = VolumeMount(name="config-volume",mount_path="/yum-config/",sub_path=None,read_only=False)
 config_dict_sec  = {"configMap":{"name":"fulltrain-config"}}
 
-#volume for configMap
 volume_sec = Volume(name="config-volume",configs=config_dict_sec)
 
 volume_mount_list = [volume_mount_config]
 volume_list=[volume_sec]
 
-#add volume and volumeMount to KubernetesOperator
 passing = KubernetesPodOperator(namespace='default',
 
                           image="vdinesh1990/kube_airflow_secrets:v2",
