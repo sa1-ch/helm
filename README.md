@@ -43,7 +43,7 @@ check the logs using below commands for any error:
 
 kubectl logs -f deployment/cluster-autoscaler -n kube-system
 
-## passing secrets and configMap from Airflow
+## Passing secrets and configMap from Airflow
 
 create secrets in eks:
 
@@ -53,7 +53,7 @@ create configMap in eks:
 
 kubectl create configmap fulltrain-config --from-file=<local path of config file>
   
-# sample code to mount the configMap in the dag:
+## sample code to mount the configMap in the dag:
 
 volume_mount_config = VolumeMount(name="config-volume",mount_path="/yum-config/",sub_path=None,read_only=False)
 config_dict_sec  = {"configMap":{"name":"fulltrain-config"}}
