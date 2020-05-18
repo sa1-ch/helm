@@ -18,7 +18,7 @@ def load_housing_data(housing_path):
     return pd.read_csv(csv_path)
 
 def train():
-    HOUSING_PATH = "../datasets/housing/"
+    HOUSING_PATH = "datasets/housing/"
     housing = load_housing_data(HOUSING_PATH)
     housing["income_cat"] = pd.cut(housing["median_income"],
                                    bins=[0., 1.5, 3.0, 4.5, 6., np.inf],
@@ -68,7 +68,7 @@ def train():
     final_mse = mean_squared_error(y_test, final_predictions)
     final_rmse = np.sqrt(final_mse)
     print("RMSE:"+str(final_rmse))
-    joblib.dump(final_model, '../artifacts/model.pkl')
-    joblib.dump(full_pipeline,'../artifacts/pipeline.pkl')
+    joblib.dump(final_model, 'artifacts/model.pkl')
+    joblib.dump(full_pipeline,'artifacts/pipeline.pkl')
 
 train()
