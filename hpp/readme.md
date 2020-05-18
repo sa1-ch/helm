@@ -39,4 +39,4 @@ To deploy the model
 (hpp-dev)$ python app.py
 ```
 
-Serving URL: http://<ec2-public-ip>:8080/
+Serving URL: http://ec2-public-ip:8080/
