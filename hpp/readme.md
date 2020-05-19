@@ -10,7 +10,7 @@ To start, clone the repo
 Create conda env
 
 ```
-(base)$ conda env create -name hpp-dev
+(base)$ conda env create -f env/dep-linux.yml --name hpp-dev
 ```
 
 Activate created env
