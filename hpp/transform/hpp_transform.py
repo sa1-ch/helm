@@ -1,7 +1,8 @@
-from sklearn.base import BaseEstimator, TransformerMixin
-import numpy as np
 
-rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
+import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+
+ROOMS_IX, BEDROOMS_IX, POPULATION_IX, HOUSEHOLDS_IX = 3, 4, 5, 6
 
 
 class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
@@ -13,22 +14,25 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
     def __init__(self, add_bedrooms_per_room=True):  # no *args or **kargs
         self.add_bedrooms_per_room = add_bedrooms_per_room
 
-    def fit(self, X, y=None):
+    def fit(self, input_df, input_y=None):
         return self  # nothing else to do
 
-    def transform(self, X):
+    def transform(self, input_df):
         """
         Transforms the data by adding some new features
         :param X: input housing data
         :return: dataframe that has new features
         """
-        rooms_per_household = X[:, rooms_ix] / X[:, households_ix]
-        population_per_household = X[:, population_ix] / X[:, households_ix]
+        rooms_per_household = input_df[:, ROOMS_IX] / input_df[:, HOUSEHOLDS_IX]
+        population_per_household = input_df[:, POPULATION_IX] / input_df[:,
+                                                                HOUSEHOLDS_IX]
         if self.add_bedrooms_per_room:
-            bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+            bedrooms_per_room = input_df[:, BEDROOMS_IX] / input_df[:, ROOMS_IX]
             return np.c_[
-                X, rooms_per_household, population_per_household, bedrooms_per_room
+                input_df, rooms_per_household, population_per_household, bedrooms_per_room
             ]
 
         else:
-            return np.c_[X, rooms_per_household, population_per_household]
+            return np.c_[
+                input_df, rooms_per_household, population_per_household]
+

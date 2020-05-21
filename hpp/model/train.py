@@ -1,23 +1,36 @@
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import GridSearchCV
-import joblib
 import os
-from transform.hpp_transform import CombinedAttributesAdder
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.metrics import mean_squared_error
-import logging
+from pathlib import Path
 
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s %(name)s %(levelname)s:%(message)s"
-)
-logger = logging.getLogger(__name__)
+import joblib
+import numpy as np
+import pandas as pd
+from ioc.di import Core
+from sklearn.compose import ColumnTransformer
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler
+from transform.hpp_transform import CombinedAttributesAdder
+
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+BINS = [0.0, 1.5, 3.0, 4.5, 6.0, np.inf]
+LABELS = [1, 2, 3, 4, 5]
+N_ESTIMATOR_1 = [3, 10, 30]
+N_ESTIMATOR_2 = [3, 10]
+MAX_FEATURES_1 = [2, 4, 6, 8]
+MAX_FEATURES_2 = [2, 3, 4]
+
+
+def get_module_dir():
+    """
+    gets module path
+    """
+    path = Path(CURRENT_PATH)
+    return path.parent
 
 
 def split_data(input_df):
@@ -50,14 +63,13 @@ def train():
     Trains the RandomForestRegressor with housing data
     It serializes pipeline and model
     """
-    housing_path = "datasets/housing/"
+    logger = Core.logger()
+    # housing_path = "datasets/housing/"
+    module_path = get_module_dir()
+    housing_path = os.path.join(module_path, "datasets", "housing")
     housing = load_housing_data(housing_path)
     # income category column for strat sampling
-    housing["income_cat"] = pd.cut(
-        housing["median_income"],
-        bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
-        labels=[1, 2, 3, 4, 5],
-    )
+    housing["income_cat"] = pd.cut(housing["median_income"], bins=BINS, labels=LABELS,)
     strata_train_set, strata_test_set = split_data(housing)
     for set_ in (strata_train_set, strata_test_set):
         set_.drop("income_cat", axis=1, inplace=True)
@@ -83,8 +95,12 @@ def train():
     housing_prepared = full_pipeline.fit_transform(housing)
     forest_reg = RandomForestRegressor()
     param_grid = [
-        {"n_estimators": [3, 10, 30], "max_features": [2, 4, 6, 8]},
-        {"bootstrap": [False], "n_estimators": [3, 10], "max_features": [2, 3, 4]},
+        {"n_estimators": N_ESTIMATOR_1, "max_features": MAX_FEATURES_1},
+        {
+            "bootstrap": [False],
+            "n_estimators": N_ESTIMATOR_2,
+            "max_features": MAX_FEATURES_2,
+        },
     ]
     # hyper parameter tuning using grid search
     grid_search = GridSearchCV(
@@ -103,9 +119,10 @@ def train():
     final_mse = mean_squared_error(y_test, final_predictions)
     final_rmse = np.sqrt(final_mse)
     logger.info("RMSE:{}".format(str(final_rmse)))
-    artifact_path = "../artifacts"
+    artifact_path = os.path.join(module_path, "artifacts")
     if not os.path.isdir(artifact_path):
         os.mkdir(artifact_path)
+
     # saving model and pipeline
     joblib.dump(final_model, "{}/model.pkl".format(artifact_path))
     joblib.dump(full_pipeline, "{}/pipeline.pkl".format(artifact_path))
