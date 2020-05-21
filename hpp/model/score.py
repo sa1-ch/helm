@@ -21,9 +21,6 @@ class HPPModel:
     def predict(self, feature_values, features_names):
         """
         predicts the house price
-        :param feature_values: input data
-        :param features_names: features
-        :return:
         """
         logger = Core.logger()
         logger.info("Features:" + str(features_names))

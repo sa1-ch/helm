@@ -15,15 +15,20 @@ def create_logger():
 
 
 class Core(containers.DeclarativeContainer):
-    """IoC container of core component providers."""
+    """
+    IoC container of core component providers.
 
+    """
     config = providers.Configuration("config")
 
     logger = providers.Singleton(create_logger)
 
 
 class Gateways(containers.DeclarativeContainer):
-    """IoC container of gateway (API clients to remote services) providers."""
+    """
+    IoC container of gateway (API clients to remote services) providers.
+
+    """
 
     s3_fs = providers.Singleton(
         s3fs.S3FileSystem,

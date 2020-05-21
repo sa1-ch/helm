@@ -37,8 +37,6 @@ def split_data(input_df):
     """
     strata data split into train test
 
-    :param input_df: input data to split
-    :return: train and test dataframe
     """
     split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
     for train_index, test_index in split.split(input_df, input_df["income_cat"]):
@@ -51,8 +49,6 @@ def load_housing_data(housing_path):
     """
     Loads data in csv file
 
-    :param housing_path: data path
-    :return: housing data dataframe
     """
     csv_path = os.path.join(housing_path, "housing.csv")
     return pd.read_csv(csv_path)

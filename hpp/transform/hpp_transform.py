@@ -9,7 +9,8 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
     """
     CombinedAttributesAdder is the transformer that adds some new features to
     existing data
-    """
+   
+   """
 
     def __init__(self, add_bedrooms_per_room=True):  # no *args or **kargs
         self.add_bedrooms_per_room = add_bedrooms_per_room
@@ -20,8 +21,7 @@ class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
     def transform(self, input_df):
         """
         Transforms the data by adding some new features
-        :param X: input housing data
-        :return: dataframe that has new features
+        
         """
         rooms_per_household = input_df[:, ROOMS_IX] / input_df[:, HOUSEHOLDS_IX]
         population_per_household = input_df[:, POPULATION_IX] / input_df[:,
