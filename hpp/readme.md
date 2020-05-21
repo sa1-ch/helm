@@ -17,7 +17,6 @@ Activate created env
 
 ```
 (base)$ conda activate hpp-dev
-(hpp-dev)$ pip install -r requirements.txt
 (hpp-dev)$ pip install -e .
 ```
 
