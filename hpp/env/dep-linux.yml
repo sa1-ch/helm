@@ -61,5 +61,4 @@ dependencies:
   - zlib=1.2.11=h7b6447c_3
   - pip:
     - gunicorn==19.10.0      
-prefix: /home/dinesh.velmuruga/miniconda3/envs/hpp-dep
 

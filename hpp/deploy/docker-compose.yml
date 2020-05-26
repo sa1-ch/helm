@@ -48,12 +48,3 @@ services:
         ports:
           - "8082:5601"
     
-            #metricbeat:
-            #image: docker.elastic.co/beats/metricbeat:7.7.0
-            #links:
-            #- "elasticsearch"
-            #- "kibana"
-            #environment:
-            #- setup.kibana.host=kibana:5601
-            #- output.elasticsearch.hosts=["elasticsearch:9200"]
-          
