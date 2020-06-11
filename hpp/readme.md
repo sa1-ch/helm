@@ -1,5 +1,10 @@
 # Flask-Model-Deployment
 
+### Architecture
+
+![](https://raw.githubusercontent.com/tigerrepository/MLE-Playgorund/master/hpp/docker_deployement.jpg)
+
+
 ### Installation
 
 To start, clone the repo
@@ -46,3 +51,5 @@ Start the services
 
 
 Serving URL: http://ec2-public-ip:8080/
+
+
