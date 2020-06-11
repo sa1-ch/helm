@@ -32,10 +32,17 @@ To test the trained model
 (hpp-dev)$ python ./model/test.py
 ```
 
-To deploy the model
+Dockerize the model
 
 ```
-(hpp-dev)$ python app.py
+(hpp-dev)$ docker build -t hpp-deploy:v1 -f deploy/Dockerfile .
 ```
+
+Start the services
+
+```
+(hpp-dev)$ docker-compose -f deploy/docker-compose.yml up
+```
+
 
 Serving URL: http://ec2-public-ip:8080/

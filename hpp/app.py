@@ -4,8 +4,13 @@ from flask import Flask, request, render_template
 from ioc.di import Core
 from model.score import HPPModel
 
-app = Flask(__name__)
 
+
+def create_app():
+    flask_app = Flask(__name__)
+    return flask_app
+
+app = create_app()
 
 @app.route("/")
 def home():
@@ -44,5 +49,5 @@ def predict():
     )
 
 
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8080)
+#if __name__ == "__main__":
+#    app.run(debug=True, host='0.0.0.0', port=8080)
