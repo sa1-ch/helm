@@ -2,7 +2,7 @@
 
 ### Architecture
 
-![](https://raw.githubusercontent.com/tigerrepository/MLE-Playgorund/master/hpp/docker_deployement.jpg)
+![logo](https://github.com/tigerrepository/MLE-Playground/blob/master/hpp/docker_deployement.jpg)
 
 
 ### Installation
