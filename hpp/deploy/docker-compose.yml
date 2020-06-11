@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+    #flask app house price prediction(hpp)
+    hpp:
+        image: hpp-deploy:v1
+        ports:
+        - "8080:5000"
+        links:
+        - fluentd
+        environment:
+        - MODEL_ARTIFACT=/home/mle-user/hpp-docker/artifacts/model.pkl
+        - PIPELINE_ARTIFACT=/home/mle-user/hpp-docker/artifacts/pipeline.pkl
+        logging:
+          driver: "fluentd"
+          options:
+            fluentd-address: localhost:24224
+    #services for EFK stack
+    fluentd:
+        build: ./fluentd
+        volumes:
+          - ./fluentd/conf:/fluentd/etc
+        ports:
+          - "24224:24224"
+        links:
+          - "elasticsearch"
+    elasticsearch:
+        image: elasticsearch:7.7.0
+        hostname: elasticsearch
+        expose:
+          - 9200
+        ports:
+          - "8081:9200"
+        environment:
+          - discovery.type=single-node
+        ulimits:
+          nofile:
+            soft: 65536
+            hard: 65536
+    kibana:
+        image: kibana:7.7.0
+        hostname: kibana
+        links:
+          - "elasticsearch"
+        environment:
+          - SERVER_HOST=0.0.0.0
+          - SERVER_PORT=5601
+          - ELASTICSEARCH_URL=http://elasticsearch:9200
+        ports:
+          - "8082:5601"
+    
