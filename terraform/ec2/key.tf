@@ -1,0 +1,4 @@
+resource "aws_key_pair" "tiger-mle-key" {
+  key_name   = "tiger-mle-ec2-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAjcUZWWgFb9TMPfVbx7vpF6K09SWl6v5bDc+F2jcT4RmWQXO+TvxtA9Cf2KZKYWgGqelrGfnOLBvc6WmhuviGmoZUtWPVPaGrmLlZTB7v5h0OIHKCFT3DMmBA0Yj0s6fNYS41EFqo5jlHBPPCVVkbCvVtvZ7jKCK3x71hzRwA1QNoCyXCJltZmQT5NPsd7FlDpaKnBZbvED/coSMZNEOQex2vkL+yFOeSOXvqTfU1Qnuss7O8upaAw3VxjEFUa2yHqqNWnFHfCLG4f/aT9fMQnhjFkrOhAMxEBzquIi8ue3QMJQiJ4w2dxRtRAah5YWS5/VB74tkSn08B9PGjOeg8Bw== rsa-key-20200611"
+}
