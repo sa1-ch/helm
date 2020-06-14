@@ -1,6 +1,6 @@
 # Create EC2 instance within VPC and Subnet
 
-###Code Description:
+### Code Description:
 modules - reusable terraform code
 live    - contains code for different environment
 
