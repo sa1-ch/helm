@@ -19,6 +19,8 @@
 ### Initialize terraform to store state in backend
 It is recommended to have terraform state files in remote backend to avoid issues like manual errors, locking and secrets. Remote backends allow you to store the state file in a remote, shared store. We have used S3 to store the terraform state files by enabling encryption and accidental delete. It is highly recommended that you enable Bucket Versioning on the S3 bucket to allow for state recovery in the case of accidental deletions and human error.
 
+It is also recommended to isolate the state files at environment and component level like we do in this example
+
 To run terraform apply, Terraform will automatically acquire a lock; if someone else is already running apply, they will already have the lock, and you will have to wait
 
 Create S3 bucket and dynamo db to lock the state during the changes
@@ -47,7 +49,7 @@ Check the plan that it includes all resource in terraform script
 ```
 Once review the plan and apply. Double check and type "yes"
 
-Above comand creates the vpc, subnets, internet gateway, route tables and its output will be stored in variables as in output.tf. Moreover, tf state will be stored in staging/vpc/terraform.tfstate with outputs. We do this since we need output of vpc like vpc_id and subnet_id while creating ec2 instance.
+Above comand creates the vpc, subnets, internet gateway, route tables and its output will be stored in variables as in output.tf. Moreover, tf state will be stored in **staging/vpc/terraform.tfstate** with outputs. We do this since we need output of vpc like vpc_id and subnet_id while creating ec2 instance.
 
 ### Create EC2 instance
 
@@ -63,7 +65,7 @@ Check the plan that it includes all resource in terraform script
 ```
 Once review the plan and apply. Double check and type "yes"
 
-Above comand creates the ec2 instance and its output will be stored in variables as in output.tf. Moreover, tf state will be stored in staging/compute/terraform.tfstate with outputs. We do this since we need output of instance like instance_id and avaliablility zone while creating and attaching ebs volume instance that we do in next step.
+Above comand creates the ec2 instance and its output will be stored in variables as in output.tf. Moreover, tf state will be stored in **staging/compute/terraform.tfstate** with outputs. We do this since we need output of instance like instance_id and avaliablility zone while creating and attaching ebs volume instance that we do in next step.
 
 ### Create EC2 instance
 
@@ -79,7 +81,7 @@ Check the plan that it includes all resource in terraform script
 ```
 Once review the plan and apply. Double check and type "yes"
 
-Above comand creates the ebs volume. Moreover, tf state will be stored in staging/storage/terraform.tfstate
+Above comand creates the ebs volume. Moreover, tf state will be stored in **staging/storage/terraform.tfstate**
 
 ###Gotchas
 
