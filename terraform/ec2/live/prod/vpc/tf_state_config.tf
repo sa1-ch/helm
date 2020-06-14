@@ -3,7 +3,7 @@ terraform {
     # Replace this with your bucket name!
     # Cant use variables in terraform config since hardcoded
     bucket         = "mle-terraform-state"
-    key            = "staging/vpc/terraform.tfstate"
+    key            = "prod/vpc/terraform.tfstate"
     region         = "us-east-1"
 
     # Replace this with your DynamoDB table name!
