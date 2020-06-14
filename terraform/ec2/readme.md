@@ -67,7 +67,7 @@ Once review the plan and apply. Double check and type "yes"
 
 Above comand creates the ec2 instance and its output will be stored in variables as in output.tf. Moreover, tf state will be stored in **staging/compute/terraform.tfstate** with outputs. We do this since we need output of instance like instance_id and avaliablility zone while creating and attaching ebs volume instance that we do in next step.
 
-### Create EC2 instance
+### Create EBS volume
 
 Check the plan that it includes all resource in terraform script
 ```
