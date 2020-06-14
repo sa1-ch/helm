@@ -83,7 +83,7 @@ Once review the plan and apply. Double check and type "yes"
 
 Above comand creates the ebs volume. Moreover, tf state will be stored in **staging/storage/terraform.tfstate**
 
-###Gotchas
+### Gotchas
 
 To develop the reusable terraform code, we create modules and those modules can be used accross the environment and teams. For instance, team who wants to ec2 instance within vpc can use vpc and compute modules in their terraform code
 
