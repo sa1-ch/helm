@@ -1,6 +1,7 @@
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
+    # Cant use variables in terraform config since hardcoded
     bucket         = "mle-terraform-state"
     key            = "staging/vpc/terraform.tfstate"
     region         = "us-east-1"
