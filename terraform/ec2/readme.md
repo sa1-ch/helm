@@ -1,8 +1,8 @@
 # Create EC2 instance within VPC and Subnet
 
 ### Code Description:
-modules - reusable terraform code
-live    - contains code for different environment
+1. modules - reusable terraform code
+1. live    - contains code for different environment
 
 ### Prequisite
 1. Install Terraform
