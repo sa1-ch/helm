@@ -4,6 +4,12 @@ variable "aws_region" {
   type = string
 }
 
+variable "aws_provider_version" {
+  description = "provider version"
+  default = "~> 2.8"
+  type = string
+}
+
 variable "state_bucket" {
   description = "S3 bucket to persist terraform state"
   default = "mle-terraform-state"
