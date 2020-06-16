@@ -1,21 +1,22 @@
 module "dev_vpc" {
-  source = "../../modules/vpc"
+  #evnetually, this will git versioned
+  source = "../../../modules/vpc"
   # setting vpc inputs
-  vpc_cidr_block = "10.0.0.0/16"
-  resource_tag = "tiger-mle"
+  vpc_cidr_block = var.vpc_cidr_block
+  resource_tag = var.resource_tag
 
   # setting subnet inputs
-  subnet_cidr_block = "10.0.1.0/24"
+  subnet_cidr_block = var.subnet_cidr_block
   
 
   #setting routing inputs
-  route_table_dest_cidr = "0.0.0.0/0"
+  route_table_dest_cidr = var.route_table_dest_cidr
 
   #setting security groups inputs
-  sg_name = "tiger-mle-sg"
-  sg_tcp_from_port = 8080
-  sg_tcp_to_port = 8085
-  ingress_ip = ["182.75.175.34/32","1.22.172.58/32"]
-  ssh_port = 22
+  sg_name = var.sg_name
+  sg_tcp_from_port = var.sg_tcp_from_port
+  sg_tcp_to_port = var.sg_tcp_to_port
+  ingress_ip = var.ingress_ip
+  ssh_port = var.ssh_port
   
 }

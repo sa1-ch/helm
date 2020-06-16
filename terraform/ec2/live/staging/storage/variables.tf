@@ -36,5 +36,6 @@ variable "ebs_volume_size" {
 
 variable "compute_state_key" {
   description = "state path for instance"
+  default = "staging/compute/terraform.tfstate"
   type = string
 }

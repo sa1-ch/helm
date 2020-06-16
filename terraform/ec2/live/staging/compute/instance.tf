@@ -1,12 +1,13 @@
 module "dev_compute" {
+  # eventually, this will be versioned url from git
   source = "../../../modules/compute"
 
-  state_bucket = "mle-terraform-state"
-  vpc_state_key = "staging/vpc/terraform.tfstate"
-  aws_region = "us-east-1"
-  instance_ami = "ami-0323c3dd2da7fb37d"
-  ec2_instance_type = "t2.micro"
-  key_pair_name = "tiger-mle"
-  compute_tag = "tiger-mle-compute"
+  state_bucket = var.state_bucket
+  vpc_state_key = var.vpc_state_key
+  aws_region = var.aws_region
+  instance_ami = var.instance_ami
+  ec2_instance_type = var.ec2_instance_type
+  key_pair_name = var.key_pair_name
+  compute_tag = var.compute_tag
   
 }

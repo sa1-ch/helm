@@ -6,7 +6,7 @@ variable "aws_region" {
 
 variable "aws_provider_version" {
   description = "provider version"
-  default = "~> 3.0"
+  default = "~> 2.8"
   type = string
 }
 

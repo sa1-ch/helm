@@ -1,9 +1,9 @@
 module "dev_ebs" {
   source = "../../../modules/storage"
-  state_bucket = "mle-terraform-state"
-  compute_state_key = "staging/compute/terraform.tfstate"
-  aws_region = "us-east-1"
-  ebs_volume_size = 8
-  storage_tag = "tiger-mle-storage"
-  ebs_device_name = "/dev/sdh"
+  state_bucket = var.state_bucket
+  compute_state_key = var.compute_state_key
+  aws_region = var.aws_region
+  ebs_volume_size = var.ebs_volume_size
+  storage_tag = var.storage_tag
+  ebs_device_name = var.ebs_device_name
 }

@@ -33,3 +33,9 @@ variable "compute_tag" {
   default = "tiger-mle-compute"
   type = string
 }
+
+variable "vpc_state_key" {
+  description = "remote path to store state"
+  default = "staging/vpc/terraform.tfstate"
+  type = string
+}
