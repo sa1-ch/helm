@@ -1,0 +1,17 @@
+module "dev_nodegroup" {
+  source = "../../../../modules/services/nodegroup"
+  
+  state_bucket = var.state_bucket
+  eks_cluster_state_key = var.eks_cluster_state_key
+  aws_region = var.aws_region
+  vpc_state_key = var.vpc_state_key
+  eks_ng_name = var.eks_ng_name
+  eks_ng_desired_size = var.eks_ng_desired_size
+  eks_ng_max_size = var.eks_ng_max_size
+  eks_ng_min_size = var.eks_ng_min_size
+  eks_ng_ami_type = var.eks_ng_ami_type
+  eks_ng_disk_size = var.eks_ng_disk_size
+  eks_ng_instance_type = var.eks_ng_instance_type
+  eks_ng_role = var.eks_ng_role
+  
+}
