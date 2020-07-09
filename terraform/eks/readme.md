@@ -1,4 +1,4 @@
-# Create EC2 instance within VPC and Subnet
+# Create production-grade EKS cluster
 
 ### Code Description:
 1. modules - reusable terraform code
