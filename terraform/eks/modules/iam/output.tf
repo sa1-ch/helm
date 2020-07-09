@@ -21,3 +21,9 @@ output "worker_instance_profile_name" {
 output "worker_instance_profile_arn" {
   value = aws_iam_instance_profile.worker_instance_profile.arn
   description = "instance profile arn"
+}
+
+output "s3_role_arn" {
+  value = aws_iam_role.tiger-mle-s3-role.arn
+  description = "iam role arn for s3"
+}

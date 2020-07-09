@@ -40,10 +40,6 @@ variable "aws_account_id" {
   default     = ""
 }
 
-variable "provider_url" {
-  description = "URL of the OIDC Provider"
-  type        = string
-}
 
 variable "oidc_fully_qualified_subjects" {
   description = "The fully qualified OIDC subjects to be added to the role policy"
