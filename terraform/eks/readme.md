@@ -1,5 +1,8 @@
 # Create production-grade EKS cluster
 
+### Architecture:
+![logo](https://github.com/tigerrepository/MLE-Playground/blob/feat/eks-terraform/terraform/eks/production-grade-eks.jpg)
+
 ### Code Description:
 1. modules - reusable terraform code
 1. live    - contains code for different environment
