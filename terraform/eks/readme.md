@@ -55,7 +55,7 @@ Once reviewed, run apply command
 
 Check the plan that it includes all resource in terraform script
 ```
-(base)$ cd live/staging/vpc
+(base)$ cd live/staging/networking
 (base)$ terraform init
 (base)$ terraform plan
 ```
