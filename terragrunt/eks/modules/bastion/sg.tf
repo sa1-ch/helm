@@ -18,10 +18,10 @@ resource "aws_security_group_rule" "bastion_sg_rule" {
 }
 
 resource "aws_security_group_rule" "cluster_bastion_sg_rule" {
-  type              = "ingress"
-  from_port         = var.bastion_from_port
-  to_port           = var.bastion_to_port
-  protocol          = var.bastion_protocol
-  cidr_blocks       = ["${aws_instance.tiger-mle-ec2.public_ip}/32"]
+  type                     = "ingress"
+  from_port                = var.bastion_from_port
+  to_port                  = var.bastion_to_port
+  protocol                 = var.bastion_protocol
+  source_security_group_id = aws_security_group.bastion_sg.id
   security_group_id = var.cluster_sg
 }

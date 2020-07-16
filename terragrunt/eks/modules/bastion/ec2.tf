@@ -10,7 +10,7 @@ resource "aws_instance" "tiger-mle-ec2" {
   vpc_security_group_ids = aws_security_group.bastion_sg[*].id
   key_name = var.key_pair_name
   associate_public_ip_address = var.associate_public_ip_address
-  
+  iam_instance_profile = aws_iam_instance_profile.bation.id  
 
   tags = {
 

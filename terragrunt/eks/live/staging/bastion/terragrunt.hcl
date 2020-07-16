@@ -31,6 +31,7 @@ include  {
 inputs = {
   name = "bastion-sg"
   aws_region = "us-east-1"
+  ec2_instance_type = "t3.medium"
   vpc_id  = dependency.vpc.outputs.vpc_id
   name_tag = "mle-bastion-host-sg"
   subnet_id = dependency.vpc.outputs.public_subnet_id[0]
@@ -38,6 +39,13 @@ inputs = {
   bastion_to_port   = 65543
   bastion_protocol  = "-1"
   cluster_sg        = dependency.eks_cluster.outputs.vpc_config[0].cluster_security_group_id
+  ebs_volume_size = 50
+  storage_tag     = "tiger-mle"
+  ebs_device_name = "/dev/sdh"
+  role_name_prefix = "bastion-role-"
+  role_name        = "bastion-iam-role"
+  instance_profile_name_prefix = "bastion-instance-profile"
+  policies = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryReadOnly","AmazonS3FullAccess"]
   sg_rules = [
                {
                  type = "ingress"
