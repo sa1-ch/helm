@@ -18,7 +18,7 @@ dependency "eks_cluster" {
   config_path = "../cluster"
   
   mock_outputs = {
-    cluster_version = "1.16"
+    cluster_version = "1.15"
     cluster_id      = "dummy-cluster-id"
   }
 }
@@ -34,13 +34,13 @@ inputs = {
   subnet_ids      = dependency.vpc.outputs.private_subnet_id
   node_groups = [
     {
-      name    =  "mle-shipping-forecast-ng-1"
+      name    =  "tiger-mle-t2-demand"
       desired_size = 1
       max_size =  5
       min_size = 1
       ami_type = "AL2_x86_64"
       disk_size = 20
-      instance_types = ["t3.medium"]
+      instance_types = ["t2.2xlarge"]
       labels = {
         "nodegroup-type" = "stateful-workload"
         "instance-type"  = "onDemand"
@@ -50,7 +50,7 @@ inputs = {
       tags = {
         "k8s.io/cluster-autoscaler/${dependency.eks_cluster.outputs.cluster_id}" = "owned"
         "k8s.io/cluster-autoscaler/enabled" = "true"
-        "Name" = "mle-shipping-on-demand"
+        "Name" = "tiger-mle-on-demand"
       }
 
       ec2_ssh_key = "tiger-mle-ec2-keys"

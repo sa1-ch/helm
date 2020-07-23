@@ -30,8 +30,9 @@ include  {
 
 inputs = {
   name = "bastion-sg"
+  compute_tag="tiger-mle-bastion"
   aws_region = "us-east-1"
-  ec2_instance_type = "t3.medium"
+  ec2_instance_type = "t2.medium"
   vpc_id  = dependency.vpc.outputs.vpc_id
   name_tag = "mle-bastion-host-sg"
   subnet_id = dependency.vpc.outputs.public_subnet_id[0]
@@ -45,7 +46,7 @@ inputs = {
   role_name_prefix = "bastion-role-"
   role_name        = "bastion-iam-role"
   instance_profile_name_prefix = "bastion-instance-profile"
-  policies = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryReadOnly","AmazonS3FullAccess"]
+  policies = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryPowerUser","AmazonS3FullAccess", "AmazonDynamoDBFullAccess", "IAMReadOnlyAccess", "AWSImageBuilderFullAccess", "AmazonEC2FullAccess"]
   sg_rules = [
                {
                  type = "ingress"

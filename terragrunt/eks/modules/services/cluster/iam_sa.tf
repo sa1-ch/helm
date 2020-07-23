@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 
 resource "aws_iam_role" "sa_iam_role" {
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
-  name               = "sa_iam_role"
+  name               = var.sa_iam_role
 }
 
 resource "aws_iam_role_policy_attachment" "sa_iam_policy_attach" {

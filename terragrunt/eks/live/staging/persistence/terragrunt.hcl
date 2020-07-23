@@ -35,8 +35,8 @@ include  {
 inputs = {
   engine = "postgres"
   engine_version = "11.6"
-  instance_class = "db.t2.micro"
-  name           = "shippinginstance"
+  instance_class = "db.t2.medium"
+  name           = "postgres"
   port           = "5432"
   username       = "postgres"
   password       = "Tiger123!"
@@ -44,7 +44,7 @@ inputs = {
   backup_window          = "09:46-10:16"
   maintenance_window     = "Mon:00:00-Mon:03:00"
   allocated_storage      = 20
-  identifier             = "shipment"
-  name_prefix            = "shipping"
+  identifier             = "mle-db-instance"
+  name_prefix            = "mle-db-instance"
   subnet_ids             = dependency.vpc.outputs.persistence_private_subnet_id
 }

@@ -176,7 +176,7 @@ variable "attach_worker_cni_policy" {
 variable "cluster_version" {
   description = "cluster version"
   type = string
-  default = "1.16"
+  default = "1.15"
 }
 
 variable "worker_ami_owner_id" {

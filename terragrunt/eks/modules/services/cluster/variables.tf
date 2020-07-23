@@ -80,7 +80,7 @@ variable "worker_create_cluster_primary_security_group_rules" {
 variable "cluster_version" {
   description = "Kubernetes version to use for the EKS cluster."
   type        = string
-  default     = "1.16"
+  default     = "1.15"
 }
 
 variable "tags" {
@@ -124,4 +124,23 @@ variable "vpc_id" {
   description = "vpc for cluster"
   type = string
   default = ""
+}
+
+variable "endpoint_public_access" {
+  description = "Enable cluster end point public access"
+  type        = bool
+  default     = false
+}
+
+variable "endpoint_private_access" {
+  description = "Enable cluster end point private access"
+  type        = bool
+  default     = true
+}
+
+variable "sa_iam_role" {
+  description = "service account iam role"
+  type = string
+  default = ""
+
 }

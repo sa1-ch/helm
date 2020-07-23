@@ -10,7 +10,12 @@ resource "aws_instance" "tiger-mle-ec2" {
   vpc_security_group_ids = aws_security_group.bastion_sg[*].id
   key_name = var.key_pair_name
   associate_public_ip_address = var.associate_public_ip_address
-  iam_instance_profile = aws_iam_instance_profile.bation.id  
+  iam_instance_profile = aws_iam_instance_profile.bation.id
+  root_block_device {
+    volume_type = "gp2"
+    volume_size = "100"
+    delete_on_termination = "true"
+  }
 
   tags = {
 

@@ -2,8 +2,8 @@ data "terraform_remote_state" "eks_cluster" {
   backend = "s3"
 
   config = {
-    bucket = "mle-terraform-state"
-    key    = "services/cluster/terraform.tfstate"
+    bucket = "mle-terragrunt-state"
+    key    = "terragrunt/services/cluster/terraform.tfstate"
     region = "us-east-1"
   }
 }

@@ -147,7 +147,7 @@ variable "ebs_volume_size" {
 
   description = "ebs volume size"
 
-  default = 8
+  default = 70
 
   type = number
 
@@ -200,7 +200,7 @@ variable "instance_profile_path" {
 
 variable "policies" {
   description = "name for iam role"
-  default = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryReadOnly"]
+  default = ["AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy","AmazonEC2ContainerRegistryPowerUser", "AmazonDynamoDBFullAccess", "IAMReadOnlyAccess", "AWSImageBuilderFullAccess", "AmazonEC2FullAccess"]
   type = list(string)
 
 }
@@ -210,6 +210,3 @@ variable "policy_arn_prefix" {
   type = string
   default = ""
 }
-
-
-

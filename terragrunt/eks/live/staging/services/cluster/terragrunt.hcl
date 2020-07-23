@@ -39,4 +39,7 @@ inputs = {
   role_arn         = dependency.iam_role.outputs.eks_role_arn
   subnet_ids       = dependency.vpc.outputs.private_subnet_id
   vpc_id           = dependency.vpc.outputs.vpc_id
+  endpoint_private_access = false
+  endpoint_public_access  = true
+  sa_iam_role = "sa_iam_role_tg"
 }

@@ -6,7 +6,7 @@ variable "aws_region" {
 
 variable "state_bucket" {
   description = "S3 bucket to persist terraform state"
-  default = "mle-terraform-state"
+  default = "mle-terragrunt-state"
   type = string
 }
 
@@ -18,7 +18,7 @@ variable "sse_algorithm" {
 
 variable "tf_state_lock_table" {
   description = "dynamodb table for terraform state lock"
-  default = "tf_state_lock_table"
+  default = "tg_state_lock_table"
   type = string
 }
 

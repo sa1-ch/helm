@@ -18,4 +18,3 @@ resource "aws_iam_role_policy_attachment" "bastion_policy_attachement" {
   policy_arn = "${local.policy_arn_prefix}/${var.policies[count.index]}"
   role       = aws_iam_role.bastion.name
 }
-

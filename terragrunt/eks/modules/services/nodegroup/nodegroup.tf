@@ -12,9 +12,9 @@ resource "aws_eks_node_group" "tiger-mle-eks-ng" {
 
   }
 
-  lifecycle {
-    ignore_changes = [scaling_config[0].desired_size]
-  }
+  #lifecycle {
+  #  ignore_changes = [scaling_config[0].desired_size]
+  #}
 
   # declare more specific instance
   ami_type = lookup(var.node_groups[count.index], "ami_type", local.node_group_defaults["ami_type"])
