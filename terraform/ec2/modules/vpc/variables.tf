@@ -57,3 +57,9 @@ variable "ssh_port" {
   default = 22
   type = number
 }
+
+variable "sg_protocol" {
+  description = "security group protocol"
+  default = "tcp"
+  type = string
+}
