@@ -8,7 +8,7 @@ include {
 
 inputs = {
   vpc_cidr_block        = "10.0.0.0/16"
-  resource_tag          = "tiger-mle-test"
+  resource_tag          = "tiger-mle-prod"
   route_table_dest_cidr = "0.0.0.0/0"
   sg_name               = "vpc-sg"
   sg_tcp_from_port      = 8080
