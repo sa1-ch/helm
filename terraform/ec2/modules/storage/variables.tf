@@ -10,8 +10,8 @@ variable "state_bucket" {
   type = string
 }
 
-variable "ebs_availabiltiy_zone" {
-  description = "ebe availability zone"
+variable "ebs_availability_zone" {
+  description = "ebs availability zone"
   default = "us-east-1a"
   type = string
 }
@@ -34,7 +34,13 @@ variable "ebs_volume_size" {
   type = number
 }
 
-variable "compute_state_key" {
-  description = "state path for instance"
+variable "ec2_availability_zone" {
+  description = "ec2 availability zone"
   type = string
 }
+
+variable "ec2_instance_id" {
+  description = "ec2 instance id"
+  type = string
+}
+

@@ -34,7 +34,13 @@ variable "compute_tag" {
   type = string
 }
 
-variable "vpc_state_key" {
-  description = "vpc state path"
+variable "sg_id" {
+  description = "security group id"
+  type = list(string)
+}
+
+variable "subnet_id" {
+  description = "subnet id"
   type = string
 }
+

@@ -8,7 +8,7 @@ resource "aws_security_group" "tiger-mle-sg" {
    cidr_blocks = var.ingress_ip
 
  }
-ingress {
+ ingress {
    from_port = var.ssh_port
    to_port = var.ssh_port
    protocol = var.sg_protocol
