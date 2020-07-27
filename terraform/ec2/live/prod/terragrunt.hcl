@@ -1,3 +1,5 @@
+# This parent terragrunt.hcl file has the remote state config that can be used by child modules
+# the terragrunt built-in function path_relative_to_include() returns the relative path to the include block in child modules
 remote_state {
   backend = "s3"
   config = {
