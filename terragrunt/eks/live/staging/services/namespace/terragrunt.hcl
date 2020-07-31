@@ -12,7 +12,7 @@ dependency "eks_cluster" {
   mock_outputs = {
     cluster_id = "eks-cluster-dummy-id"
   }
-  mock_outputs_allowed_terraform_commands = ["validate"]
+  mock_outputs_allowed_terraform_commands = ["validate","plan"]
 }
 
 include  {
@@ -20,6 +20,6 @@ include  {
 }
 
 inputs = {
-  mle_ns = "ts-eks-ns"
+  mle_ns= ["uat-ts-eks-ns","prod-ts-eks-ns"]
   cluster_id = dependency.eks_cluster.outputs.cluster_id
 }

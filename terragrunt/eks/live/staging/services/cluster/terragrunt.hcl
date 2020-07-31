@@ -13,7 +13,7 @@ dependency "vpc" {
     private_subnet_id = ["dummy-1","dummy-2"]
   }
 
-  mock_outputs_allowed_terraform_commands = ["validate"]
+  mock_outputs_allowed_terraform_commands = ["validate","plan"]
 
 }
 
@@ -24,7 +24,7 @@ dependency "iam_role" {
     eks_role_arn = "arn:aws:iam::171774164293:role/tiger-mle-eks-role"
   }
 
-  mock_outputs_allowed_terraform_commands = ["validate"]
+  mock_outputs_allowed_terraform_commands = ["validate","plan"]
 }
 
 include  {
