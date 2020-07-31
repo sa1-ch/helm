@@ -44,6 +44,7 @@ variable "automount_service_account_token" {
 
 variable "mle_ns" {
   description = "namespace of service account"
-  default = "ts-eks-ns"
-  type = string
+  default = ["uat-eks","prod-eks"]
+  type = list
 }
+
