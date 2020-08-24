@@ -1,0 +1,27 @@
+# Login to ECR repository
+1. aws ecr get-login --no-include-email --region us-east-1 | bash
+
+# Build Scikit-learn python package
+2. python setup.py bdist_wheel
+
+
+# Build base image
+3. docker build -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5 -f docker/0.23.1/base/Dockerfile.cpu .
+
+# Push base image
+4. docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5
+
+
+5. In "docker/0.23-1/final/Dockerfile.cpu" change
+FROM sklearn-base:0.23-1-cpu-py3 ---> FROM 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5
+
+
+# Build customized image
+6. docker build -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:dt11 -f docker/0.23-1/final/Dockerfile.cpu .
+
+
+# Push customized image
+7. docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:dt11
+--------------------
+
+
