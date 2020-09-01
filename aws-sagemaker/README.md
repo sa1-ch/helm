@@ -31,7 +31,7 @@ To work with `aws-sagemaker` source code in development, install from GitHub:
 ```
 ### Order of executions
 
-#### Train-test split
+#### 1.Train-test split
 
 Please find the folder train_test_split to split the dataset to train and test data.
 
@@ -51,7 +51,7 @@ scripts to run present in following dir:
 ```
 
 
-#### Inbuilt-sagemaker-model
+#### 2.Inbuilt-sagemaker-model
  
 scripts to run present in following dir: 
 
@@ -65,7 +65,7 @@ Inbuilt sagemaker model flow:
          
    ![](images/inbuilt-sagemaker-model-flow.png)
    
-#### Monitoring
+#### 3.Monitoring
 
 scripts to run present in following dir: 
 
@@ -75,7 +75,7 @@ scripts to run present in following dir:
 |
 ```
 
-#### Custom_train_inference
+#### 4.Custom_train_inference
 
 script to run present in following dir: 
 
@@ -89,7 +89,7 @@ Custom_train_inference workflow:
 
 ![](images/custom_train_inference.png)
 
-#### Custom_docker_image_train_inference
+#### 5.Custom_docker_image_train_inference
 
 script to run present in following dir: 
 
@@ -106,7 +106,7 @@ Custom_docker_image_train_inference workflow:
 ![](images/custom_docker_image_train_inference.png)
 
 
-#### Sagemaker Autopilot
+#### 6.Sagemaker Autopilot
 
 Results of automated approach (AutoML) present in following dir: 
 
