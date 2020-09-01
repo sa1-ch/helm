@@ -6,7 +6,7 @@
 
 
 # Build base image
-3. docker build -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5 -f docker/0.23.1/base/Dockerfile.cpu .
+3. docker build -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5 -f docker/0.23-1/base/Dockerfile.cpu .
 
 # Push base image
 4. docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/sagemaker:scikit-0.23.1-cpu-python-3.8.5
