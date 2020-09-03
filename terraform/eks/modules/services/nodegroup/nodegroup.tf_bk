@@ -1,0 +1,39 @@
+data "terraform_remote_state" "eks_cluster" {
+  backend = "s3"
+
+  config = {
+    bucket = var.state_bucket
+    key    = var.eks_cluster_state_key
+    region = var.aws_region
+  }
+}
+
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+
+  config = {
+    bucket = var.state_bucket
+    key    = var.vpc_state_key
+    region = var.aws_region
+  }
+}
+
+resource "aws_eks_node_group" "tiger-mle-eks-ng" {
+  cluster_name = data.terraform_remote_state.eks_cluster.outputs.cluster_id
+  node_group_name = var.eks_ng_name
+  node_role_arn = aws_iam_role.eks_ng_role.arn
+  subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_id
+  
+  scaling_config {
+    desired_size = var.eks_ng_desired_size
+    max_size = var.eks_ng_max_size
+    min_size = var.eks_ng_min_size
+
+  }
+  
+  # declare more specific instance
+  ami_type = var.eks_ng_ami_type
+  disk_size = var.eks_ng_disk_size
+  instance_types = var.eks_ng_instance_type
+  version = data.terraform_remote_state.eks_cluster.outputs.cluster_version
+}

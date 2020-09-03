@@ -1,0 +1,10 @@
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Local .terraform directories
+**/.terraform/*
+
+# backup files
+*.tf_bk
+
