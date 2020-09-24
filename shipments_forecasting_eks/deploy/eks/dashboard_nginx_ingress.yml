@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ts-ingress-dashboard-https
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+#   tls:
+#     - hosts:
+#         - a451866fc02a64dc8acaf680fcb859f8-5097f0c8c58210ab.elb.us-east-1.amazonaws.com
+#       secretName: ts-eks-nlb
+  rules:
+    - host: {{alb_endpoint}}
+      http:
+        paths:
+          - path: /dashboard(/|$)(.*)
+            backend:
+              serviceName: kubernetes-dashboard
+              servicePort: 443

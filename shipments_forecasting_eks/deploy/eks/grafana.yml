@@ -1,0 +1,16 @@
+grafana.ini:
+  server:
+    domain: ad8571b71b9d611eaa4eb124948f47be-7407382e6c4d376b.elb.us-east-1.amazonaws.com
+    root_url: "%(protocol)s://%(domain)s/ts/grafanaserver"
+    serve_from_sub_path: true
+    
+persistence:
+  storageClassName: "gp2"
+  
+adminPassword: 'GrafanaAdm!n'
+      
+service:
+  type: ClusterIP
+  
+nodeSelector:
+  nodegroup-name: app-demand

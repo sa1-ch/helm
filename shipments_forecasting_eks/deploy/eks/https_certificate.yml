@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ts-eks-nlb-tls
+spec:
+  secretName: ts-eks-nlb
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: ts-eks-nlb.com
+  dnsNames:
+    - ad6a50d1faa5811ea8e6e0a95ea484b3-d431ef5d286dfe22.elb.us-east-1.amazonaws.com
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - ad6a50d1faa5811ea8e6e0a95ea484b3-d431ef5d286dfe22.elb.us-east-1.amazonaws.com

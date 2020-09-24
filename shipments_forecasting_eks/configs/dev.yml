@@ -1,0 +1,95 @@
+logger:
+  version: 1
+
+  disable_existing_loggers: False
+
+  formatters:
+      default:
+          format: "%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s"
+          datefmt: '%Y-%m-%d %H:%M:%S'
+
+  handlers:
+      console_handler:
+          class: logging.StreamHandler
+          level: DEBUG
+          formatter: default
+
+      debug_file_handler:
+          class: logging.handlers.TimedRotatingFileHandler
+          level: DEBUG
+          filename: log.log
+          when: 'midnight'
+          backupCount: 4
+          encoding: utf8
+          formatter: default
+          
+      warn_file_handler:
+          class: logging.handlers.TimedRotatingFileHandler
+          level: WARN
+          filename: log_error.log
+          when: 'midnight'
+          backupCount: 4
+          encoding: utf8
+          formatter: default
+
+  root:
+      level: WARN
+      handlers:
+          - warn_file_handler
+      propogate: yes
+      
+  loggers:          
+      gluonts:
+          level: DEBUG
+          handlers:
+              - console_handler
+              - debug_file_handler
+          propogate: yes
+          
+      pystan:
+          level: DEBUG
+          handlers:
+              - console_handler
+              - debug_file_handler
+          propogate: yes
+          
+      prophet:
+          level: DEBUG
+          handlers:
+              - console_handler
+              - debug_file_handler
+          propogate: yes
+
+      ts_forecast:
+        level: DEBUG
+        handlers:
+            - console_handler
+            - debug_file_handler
+        propogate: yes
+
+
+credentials:
+  tld_s3:
+    protocol: s3
+    prefix: s3://tiger-mle-tg
+
+  mlflow_store:
+    #uri: http://mlflow-server:8080 # Need to change it to actual url
+    uri: ab89c279521934f98aa1075e187d5e26-562757922.us-east-1.elb.amazonaws.com/ts/mlflowserver/
+
+  mlflow_artifact_store:
+    protocol: s3
+    prefix: s3://tiger-mle-tg/mlflow/mlflow-artifacts
+
+  airflow:
+    dag_folder_path: s3://tiger-mle-tg/airflow/dags
+    remote_rest_eks_trigger_url: ab89c279521934f98aa1075e187d5e26-562757922.us-east-1.elb.amazonaws.com/ts/airflowserver/
+    
+  execution_mode: prod
+
+  dashboard:
+    eda_input: s3://tiger-mle-tg/inputs/dashboard-input/Demo_data_17k.csv
+    eda_output_data_variables: s3://tiger-mle-tg/inputs/dashboard-output/Data_variables.csv
+    eda_output_analysed: s3://tiger-mle-tg/inputs/dashboard-output/Analysed_data.csv
+    model_evaluation_input: s3://tiger-mle-tg/inputs/evaluation-dashboard-input/all_3_models_pickle_sampled.pkl
+    idv_output: s3://tiger-mle-tg/inputs/auto-gluonts-data/

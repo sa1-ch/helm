@@ -1,0 +1,362 @@
+# 1. Path Configuration
+local_bin_variable: /home/ec2-user/.local/bin
+
+# 2. After Terraform create, copy & paste RDS Endpoint here
+rds_db_endpoint: mle-db-instance.cngtflo14uzz.us-east-1.rds.amazonaws.com
+
+# 3. After Load-Balancer & Nginx create, copy & paster Load-Balancer DNS here
+alb_endpoint: ab89c279521934f98aa1075e187d5e26-562757922.us-east-1.elb.amazonaws.com
+
+# 4. EFS Id
+efs_id: fs-1b121198
+
+# 4. Docker-Image ---> ECR
+docker_image_id: 171774164293.dkr.ecr.us-east-1.amazonaws.com/ts-app:TS17
+
+# 5. Project Code Folder config
+project_root_folder: Shipments_Forecasting
+deploy_folder: Shipments_Forecasting/deploy
+
+# 6. S3 bucket configurations
+mlflow_artifacts: s3://tiger-mle-tg/mlflow-artifacts
+airflow_dags: s3://tiger-mle-tg/airflow/dags/
+airflow_logs: s3://tiger-mle-tg/airflow/logs/
+
+
+install_pip:
+    update_yum: sudo yum update -y
+    install_python: sudo yum install python37
+    get_pip: curl -O https://bootstrap.pypa.io/get-pip.py
+    install_pip: python3 get-pip.py --user
+    verify_python: python3 --version
+    verify_pip: pip3 --version
+
+
+install_terraform:
+    get_terraform: wget https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+    unzip_terraform: unzip terraform_0.12.28_linux_amd64.zip
+    chmod_terraform: chmod u+x terraform
+    mv_terraform_bin: mv terraform {local_bin_variable}
+    verify_terraform: terraform --version
+    
+    
+install_terragrunt:
+    get_terragrunt: wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.23.31/terragrunt_linux_amd64
+    rename_terragrunt: mv terragrunt_linux_amd64 terragrunt
+    chmod_terragrunt: chmod u+x terragrunt
+    mv_terragrunt_bin: mv terragrunt {local_bin_variable}
+    verify_terrgrunt: terragrunt --version
+    
+
+install_kubectl:
+    get_kubectl: curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+    chmod: chmod +x ./kubectl
+    mv_kubectl_bin: sudo mv ./kubectl {local_bin_variable}
+    verify_kubectl: kubectl version --client
+    
+    
+install_docker:
+    yum_update: sudo yum update -y
+    install: sudo yum install docker -y 
+    usermod: sudo usermod -a -G docker ec2-user
+    verify_docker: docker --version
+
+
+terragrunt_deploy:
+    global:
+        path: terraform/live/staging/global
+        rm_cache: rm -rf .terraform
+        init: terraform init
+        plan: terraform plan
+        apply: terraform apply
+    iam:
+        path: terraform/live/staging/iam
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    networking:
+        path: terraform/live/staging/networking
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    modules_cluster:
+        path: terraform/modules/services/cluster
+        chmod: chmod +x get_thumbprint.sh
+    cluster:
+        path: terraform/live/staging/services/cluster
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    persistence:
+        path: terraform/live/staging/persistence
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    efs:
+        path: terraform/live/staging/storage/efs
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    s3:
+        path: terraform/live/staging/storage/s3
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    namespace:
+        path: terraform/live/staging/services/namespace
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    sa:
+        path: terraform/live/staging/services/sa
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    workers:
+        path: terraform/live/staging/services/workers
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    bastion:
+        path: terraform/live/staging/bastion
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        destroy: terragrunt destroy
+    aws-auth:
+        path: terraform/live/staging/services/aws-auth
+        rm_cache: rm -rf .terragrunt-cache
+        plan: terragrunt plan
+        apply: terragrunt apply
+        update_kube_config: aws eks --region us-east-1 update-kubeconfig --name tiger-mle-eks-tg
+        destroy: terragrunt destroy
+        
+
+rds_deploy:
+    psql_install: sudo yum install -y postgresql
+    connection_string: > 
+                       psql
+                       --host={rds_db_endpoint}
+                       --port=5432
+                       --username=postgres
+                       --password
+                       --dbname=postgres
+                       --command="{command}"
+    create_airflow_db: CREATE DATABASE airflow
+    create_mlflow_db: CREATE DATABASE mlflow
+
+
+ecr_deploy:
+    docker_start: sudo service docker start
+    build_image: sudo docker build -f deploy/container/Dockerfile -t {docker_image_id} .
+    ecr_login: aws ecr get-login --no-include-email --region us-east-1 | sudo bash
+    deploy_image: sudo docker push {docker_image_id}
+
+
+eks_alb_deploy:
+    path: 'eks'
+    update_kube_config: aws eks --region us-east-1 update-kubeconfig --name tiger-mle-eks-tg
+    nginx_ingress:
+        create: kubectl apply -f nginx_controller.yml
+        delete: kubectl delete -f nginx_controller.yml
+    
+
+eks_deploy:
+    path: 'eks'
+ 
+    update_kube_config: aws eks --region us-east-1 update-kubeconfig --name tiger-mle-eks-tg
+    
+    helm_repo:
+        install: curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+        verify_helm: helm version --short
+        add: helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+        update: helm repo update
+    
+    config_maps: 
+        create: >
+                kubectl create configmap eks-deploy-config --namespace=ts-eks-ns
+                --from-literal=rds_db_endpoint={rds_db_endpoint}
+                --from-literal=efs_id={efs_id}
+                --from-literal=docker_image_id={docker_image_id}
+                --from-literal=alb_endpoint={alb_endpoint}
+                --from-literal=mlflow_artifacts={mlflow_artifacts}
+                --from-literal=airflow_dags={airflow_dags}
+                --from-literal=airflow_logs={airflow_logs}
+        delete: kubectl delete configmap eks-deploy-config --namespace=ts-eks-ns
+        
+    auto_scaler:
+        create: kubectl apply -f autoscaler.yml
+        delete: kubectl delete -f autoscaler.yml
+        
+    efs:
+        provisioner: 
+            create: >
+                    cat efs_provisioner.yml | 
+                    sed "s~{{efs_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.efs_id}' -n ts-eks-ns)~g" | 
+                    kubectl apply -n ts-eks-ns -f -
+            delete: >
+                    cat efs_provisioner.yml | 
+                    sed "s~{{efs_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.efs_id}' -n ts-eks-ns)~g" | 
+                    kubectl delete -n ts-eks-ns -f -
+        rbac:
+            create: kubectl apply -f efs_rbac.yml --namespace=ts-eks-ns
+            delete: kubectl delete -f efs_rbac.yml --namespace=ts-eks-ns
+        storage: 
+            create: kubectl apply -f efs_storage.yml --namespace=ts-eks-ns
+            delete: kubectl delete -f efs_storage.yml --namespace=ts-eks-ns
+        
+    k8s_dashboard:
+        metrics:
+            create: kubectl apply -f dashboard_metrics.yml
+            delete: kubectl delete -f dashboard_metrics.yml
+        deploy:
+            create: kubectl apply -f dashboard_deploy.yml
+            delete: kubectl delete -f dashboard_deploy.yml
+        rbac:
+            create: kubectl apply -f dashboard_rbac.yml
+            delete: kubectl delete -f dashboard_rbac.yml
+            
+    prometheus:
+        namespace:
+            create: kubectl create namespace prometheus
+            delete: kubectl delete namespace prometheus
+        deploy:
+            create: >
+                    helm install prometheus stable/prometheus
+                    --namespace prometheus
+                    --values prometheus.yml
+                    --set nodeSelector.nodegroup-name=app-demand && 
+                    sleep 10 && 
+                    kubectl get deployment -n prometheus prometheus-kube-state-metrics -o yaml | 
+                    sed "s~      containers:~      nodeSelector:\n        nodegroup-name: app-demand\n      containers:~g" | 
+                    kubectl apply -n prometheus -f -
+            delete: helm uninstall prometheus -n prometheus
+    
+    grafana:
+        namespace:
+            create: kubectl create namespace grafana
+            delete: kubectl delete namespace grafana
+        deploy:
+            create: >
+                    helm install grafana stable/grafana
+                    --namespace grafana
+                    --values grafana.yml
+                    --set datasources."datasources\.yaml".apiVersion=1
+                    --set datasources."datasources\.yaml".datasources[0].name=Prometheus
+                    --set datasources."datasources\.yaml".datasources[0].type=prometheus
+                    --set datasources."datasources\.yaml".datasources[0].url=http://prometheus-server.prometheus.svc.cluster.local
+                    --set datasources."datasources\.yaml".datasources[0].access=proxy
+                    --set datasources."datasources\.yaml".datasources[0].isDefault=true
+                    --set nodeSelector.nodegroup-name=app-demand
+            delete: helm uninstall grafana -n grafana
+        nginx_ingress:
+            create: >
+                    cat grafana_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl apply -n grafana -f -
+            delete: >
+                    cat grafana_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl delete -n grafana -f -
+            
+    mlflow:
+        postgres:
+            secrets:
+                create: kubectl create secret generic mlflow-postgres-password --from-literal=password='Tiger123!' --namespace=ts-eks-ns
+                delete: kubectl delete secret mlflow-postgres-password --namespace=ts-eks-ns
+        deploy:
+            create: kubectl apply -f mlflow_server.yml --namespace=ts-eks-ns
+            delete: kubectl delete -f mlflow_server.yml --namespace=ts-eks-ns
+        nginx_ingress:
+            create: >
+                    cat mlflow_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl apply -n ts-eks-ns -f -
+            delete: >
+                    cat mlflow_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl delete -n ts-eks-ns -f -
+   
+    airflow:
+        postgres:
+            secrets:
+                create: kubectl create secret generic airflow-postgres-password --from-literal=password='Tiger123!' --namespace=ts-eks-ns
+                delete: kubectl delete secret airflow-postgres-password --namespace=ts-eks-ns
+        dags_sync:
+            create: kubectl apply -f airflow_dags_sync.yml --namespace=ts-eks-ns
+            delete: kubectl delete -f airflow_dags_sync.yml --namespace=ts-eks-ns
+        logs_sync:
+            create: kubectl apply -f airflow_logs_sync.yml --namespace=ts-eks-ns
+            delete: kubectl delete -f airflow_logs_sync.yml --namespace=ts-eks-ns
+        deploy: 
+            create: >
+                    helm install airflow-server
+                    --version 7.1.0
+                    --set externalDatabase.host=$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.rds_db_endpoint}' -n ts-eks-ns) 
+                    --values airflow_server.yml
+                    --namespace=ts-eks-ns
+                    stable/airflow
+            delete: helm uninstall airflow-server --namespace=ts-eks-ns
+        nginx_ingress:
+            create: >
+                    cat airflow_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl apply -n ts-eks-ns -f -
+            delete: >
+                    cat airflow_nginx_ingress.yml | 
+                    sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                    -n ts-eks-ns)~g" | kubectl delete -n ts-eks-ns -f -
+            
+    dashboard:
+        eda:
+            deploy:
+                create: >
+                        cat viz_eda.yml | 
+                        sed "s~{{docker_image_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.docker_image_id}' -n ts-eks-ns)~g" | 
+                        kubectl apply -n ts-eks-ns -f -
+                delete: >
+                        cat viz_eda.yml | 
+                        sed "s~{{docker_image_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.docker_image_id}' -n ts-eks-ns)~g" | 
+                        kubectl delete -n ts-eks-ns -f -
+            nginx_ingress:
+                create: >
+                        cat viz_eda_nginx.yml | 
+                        sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                        -n ts-eks-ns)~g" | 
+                        kubectl apply -n ts-eks-ns -f -
+                delete: >
+                        cat viz_eda_nginx.yml | 
+                        sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                        -n ts-eks-ns)~g" | 
+                        kubectl delete -n ts-eks-ns -f -
+        eval:
+            deploy:
+                create: >
+                        cat viz_eval.yml | 
+                        sed "s~{{docker_image_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.docker_image_id}' -n ts-eks-ns)~g" | 
+                        kubectl apply -n ts-eks-ns -f -
+                delete: >
+                        cat viz_eval.yml | 
+                        sed "s~{{docker_image_id}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.docker_image_id}' -n ts-eks-ns)~g" | 
+                        kubectl delete -n ts-eks-ns -f -
+            nginx_ingress:
+                create: >
+                        cat viz_eval_nginx.yml | 
+                        sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                        -n ts-eks-ns)~g" | 
+                        kubectl apply -n ts-eks-ns -f -
+                delete: >
+                        cat viz_eval_nginx.yml | 
+                        sed "s~{{alb_endpoint}}~$(kubectl get configmap eks-deploy-config -o jsonpath='{.data.alb_endpoint}' 
+                        -n ts-eks-ns)~g" | 
+                        kubectl delete -n ts-eks-ns -f -
+ 
