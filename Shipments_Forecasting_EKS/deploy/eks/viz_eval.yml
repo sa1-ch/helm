@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: evalm-dashboard
+  labels:
+    app: ts-app
+spec:
+  type: ClusterIP
+  selector:
+    app: ts-app
+    tier: evalm-dashboard
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evalm-dashboard
+  labels:
+    app: ts-app
+spec:
+  selector:
+    matchLabels:
+      app: ts-app
+      tier: evalm-dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ts-app
+        tier: evalm-dashboard
+    spec:
+      containers:
+        - image: {{docker_image_id}}
+          name: evalm-dashboard
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          env:
+            - name: alb_endpoint
+              valueFrom:
+                configMapKeyRef:
+                  name: eks-deploy-config
+                  key: alb_endpoint
+          args: ["-c", "/opt/conda/envs/ts-dev/bin/panel serve --show --num-procs 4 --port 8080 --address 0.0.0.0 --allow-websocket-origin=$(alb_endpoint) --keep-alive 1000 --log-level debug /root/ts-demand-forecasting/ts_forecast/dashboards/eval_dashboard.py"]
+          resources:
+             limits:
+                cpu: 3000m
+                memory: 10Gi
+             requests:
+                cpu: 3000m
+                memory: 10Gi
+          ports:
+            - containerPort: 8080
+              name: evalm-dashboard
+      nodeSelector:
+        nodegroup-name: app-demand
+      serviceAccountName: s3-service-account
+              

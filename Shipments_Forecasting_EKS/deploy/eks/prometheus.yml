@@ -1,0 +1,24 @@
+alertmanager:
+  nodeSelector:
+    nodegroup-name: app-demand
+  persistentVolume:
+    storageClass: "gp2"
+
+kubeStateMetrics:
+  nodeSelector:
+    nodegroup-name: app-demand
+
+nodeExporter:
+  nodeSelector:
+    nodegroup-name: app-demand
+
+server:
+  nodeSelector:
+    nodegroup-name: app-demand
+  persistentVolume:
+    storageClass: "gp2"
+
+pushgateway:
+  nodeSelector:
+    nodegroup-name: app-demand
+

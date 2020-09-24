@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-dags-sync
+  labels:
+    app: ts-app
+spec:
+  selector:
+    matchLabels:
+      app: ts-app
+      tier: airflow-dags-sync
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ts-app
+        tier: airflow-dags-sync
+    spec:
+      containers:
+        - image: amazon/aws-cli
+          name: airflow-dags-sync
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          env:
+            - name: airflow_dags
+              valueFrom:
+                configMapKeyRef:
+                  name: eks-deploy-config
+                  key: airflow_dags
+          args: ["-c", "while true; aws s3 sync $(airflow_dags) /opt/airflow/efs/dags/dagfiles/; pwd ;do echo Placed dags from 'aws s3 sync $(airflow_dags)' to '/opt/airflow/efs/dags/dagfiles/'; sleep 5; done"]
+          resources:
+             limits:
+                cpu: 100m
+                memory: 0.2Gi
+             requests:
+                cpu: 100m
+                memory: 0.2Gi
+          volumeMounts:
+          - name: airflow-dags
+            mountPath: /opt/airflow/efs/dags
+            subPath: dagfiles
+      volumes:
+        - name: airflow-dags
+          persistentVolumeClaim:
+            claimName: efs-airflow-dags
+      nodeSelector:
+        nodegroup-name: app-demand
+      serviceAccountName: s3-service-account

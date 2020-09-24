@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow-logs-sync
+  labels:
+    app: ts-app
+spec:
+  selector:
+    matchLabels:
+      app: ts-app
+      tier: airflow-logs-sync
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ts-app
+        tier: airflow-logs-sync
+    spec:
+      containers:
+        - image: amazon/aws-cli
+          name: airflow-logs-sync
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          env:
+            - name: airflow_logs
+              valueFrom:
+                configMapKeyRef:
+                  name: eks-deploy-config
+                  key: airflow_logs
+          args: ["-c", "while true; aws s3 sync /opt/airflow/efs/logs/ $(airflow_logs); pwd ;do echo Placed data from 'aws s3 sync /opt/airflow/efs/logs/ to $(airflow_logs)'; sleep 86400; done"]
+          resources:
+             limits:
+                cpu: 100m
+                memory: 3Gi
+             requests:
+                cpu: 100m
+                memory: 3Gi
+          volumeMounts:
+          - name: airflow-logs
+            mountPath: /opt/airflow/efs/logs
+            subPath: logfiles
+      volumes:
+        - name: airflow-logs
+          persistentVolumeClaim:
+            claimName: efs-airflow-logs
+      nodeSelector:
+        nodegroup-name: app-demand
+      serviceAccountName: s3-service-account

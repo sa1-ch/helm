@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ts-ingress-grafana-https
+  annotations:
+    kubernetes.io/ingress.class: nginx
+#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+#   tls:
+#     - hosts:
+#         - a46599d20b36111eabbbc0a53c0df09f-069d8eebf48579b2.elb.us-east-1.amazonaws.com
+#       secretName: ts-eks-nlb
+  rules:
+    - host: {{alb_endpoint}}
+      http:
+        paths:
+          - path: /ts/grafanaserver
+            backend:
+              serviceName: grafana
+              servicePort: 80

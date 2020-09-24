@@ -1,0 +1,52 @@
+name: performance # experiment name
+dataset_name: sales_forecast # name of dataset
+forecast_start_date: 2019-07-29
+forecast_end_date: 2019-09-16
+training_frequency: 
+    full: 56
+    incremental: 0
+
+
+# current run specific params (commented lines are generated during the run)
+run_params:
+    offset: 0 # offset to calculating the last train date in days 
+    
+    model_name: DeepStateEstimator # Deep_State=DeepStateEstimator, Deep_AR=DeepAREstimator, Prophet=ProphetPredictor
+    register_model: False
+    training: full
+    datapath: s3://tiger-mle-tg/inputs/demo-data
+    iter_load_all_data: False #[False: Reads one data at a time, True: Loads all data in memory]
+    seed_value: 10
+    data_start_date: 2015-06-01
+    fit_and_predict: False
+
+    hyper_params:
+        use_feat_static_cat: True
+        use_feat_dynamic_real: True
+        add_trend: True
+        num_periods_to_train: 28
+        num_layers: 2
+        num_cells: 10
+        epochs: 20
+        inc_epochs: 1
+        ctx: 'cpu'
+        learning_rate: 0.005
+        patience: 5
+        batch_size: 32  #No-of-samples/Batch
+        num_batches_per_epoch: 40  #No-of-Batches/Epoch
+        hybridize: True
+        init: 'xavier'
+        num_parellel_samples: 100
+        cell_type: 'gru'
+        
+    evaluation:
+        eval: sequential
+        num_samples: 100
+        forecastpath: s3://tiger-mle-tg/outputs/forecast-results
+        run_eval_in_train: False
+        run_eval_in_score: True
+        data_set_length: 87104 # Total no of TS in the dataset
+        data_per_parallel_process: 2200
+        num_workers_per_scoring_task: 10
+        start_index_per_scoring_task: None
+        end_index_per_scoring_task: None

@@ -1,0 +1,128 @@
+externalDatabase:
+  type: postgres
+  port: 5432
+  database: airflow
+  user: postgres
+  passwordSecret: "airflow-postgres-password"
+  passwordSecretKey: "password"
+
+airflow:
+  image:
+    repository: apache/airflow
+    tag: 1.10.10-python3.6
+    pullPolicy: IfNotPresent
+    pullSecret: ""
+  command: ["/bin/sh"]
+  env:
+    - name: rds_db_id
+      valueFrom:
+        configMapKeyRef:
+          name: eks-deploy-config
+          key: rds_db_id
+  args: ["-c", "pip install 'apache-airflow[kubernetes]' && pip install 'apache-airflow[all]'"]
+  executor: KubernetesExecutor
+      
+  extraVolumes:
+    - name: airflow-dags
+      persistentVolumeClaim:
+        claimName: efs-airflow-dags
+    - name: airflow-logs
+      persistentVolumeClaim:
+        claimName: efs-airflow-logs
+        
+  extraVolumeMounts:
+    - name: airflow-dags
+      mountPath: /opt/airflow/efs/dags
+      subPath: dagfiles
+    - name: airflow-logs
+      mountPath: /opt/airflow/efs/logs
+      subPath: logfiles
+      
+  config:
+    AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL : 30
+    AIRFLOW__CORE__PARALLELISM: 300
+    AIRFLOW__CORE__DAG_CONCURRENCY: 100
+    AIRFLOW__KUBERNETES__DAGS_VOLUME_CLAIM: efs-airflow-dags
+    AIRFLOW__KUBERNETES__DAGS_VOLUME_MOUNT: airflow-dags
+    AIRFLOW__KUBERNETES__DAGS_VOLUME_HOST: /opt/airflow/efs/dags
+    AIRFLOW__KUBERNETES__DAGS_VOLUME_SUBPATH: dagfiles
+    AIRFLOW__KUBERNETES__LOGS_VOLUME_CLAIM: efs-airflow-logs
+    AIRFLOW__KUBERNETES__LOGS_VOLUME_MOUNT: airflow-logs
+    AIRFLOW__KUBERNETES__LOGS_VOLUME_HOST: /opt/airflow/efs/logs
+    AIRFLOW__KUBERNETES__LOGS_VOLUME_SUBPATH: logfiles
+    AIRFLOW__KUBERNETES__NAMESPACE: ts-eks-ns
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: apache/airflow
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 1.10.10-python3.6
+    AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: 'False'
+    AIRFLOW__KUBERNETES__RUN_AS_USER: '50000'
+    AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: 'False'
+    #AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__FERNET_KEY: 'R3r6tZ9h4M12cIshn1FSwskYd1-9_Y_S4E6hvNruAAI='
+    #AIRFLOW__KUBERNETES_ENVIRONMENT_VARIABLES__AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: s3://ts-demand-forecasting/airflow/logs
+
+web:
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 6Gi
+    requests:
+      cpu: 2000m
+      memory: 6Gi
+  service:
+    annotations: {}
+    sessionAffinity: "None"
+    sessionAffinityConfig: {}
+    type: ClusterIP
+    externalPort: 8080
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePort:
+      http: ""
+  baseUrl: "http://0.0.0.0:8080/ts/airflowserver"
+  nodeSelector:
+    nodegroup-name: app-demand
+      
+logs:
+  path: /opt/airflow/efs/logs
+  persistence:
+    enabled: false
+    existingClaim: airflow-logs
+    subPath: logfiles
+
+dags:
+  path: /opt/airflow/efs/dags
+  persistence:
+    enabled: false
+    existingClaim: airflow-dags
+    subPath: dagfiles
+
+scheduler:
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 6Gi
+    requests:
+      cpu: 2000m
+      memory: 6Gi
+  nodeSelector:
+    nodegroup-name: app-demand
+
+rbac:
+  create: true
+  
+serviceAccount:
+  create: true
+  
+workers:         
+  enabled: false
+  
+flower:
+  enabled: false
+
+ingress:
+  enabled: False
+
+postgresql:
+  enabled: False
+  
+redis:
+  enabled: False
