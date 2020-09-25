@@ -1,5 +1,5 @@
 {
-    "METAFLOW_BATCH_CONTAINER_IMAGE": "mcd-metaflow-batch:tg03",
+    "METAFLOW_BATCH_CONTAINER_IMAGE": "shipment_forecast:metaflow01",
     "METAFLOW_BATCH_CONTAINER_REGISTRY": "171774164293.dkr.ecr.us-east-1.amazonaws.com",
     "METAFLOW_BATCH_JOB_QUEUE": "job-queue-mcd-dev-3",
     "METAFLOW_DATASTORE_SYSROOT_S3": "s3://mcd-dev-3-metaflows3bucket-1xfz3783699bs/artifacts",

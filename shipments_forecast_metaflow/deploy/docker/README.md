@@ -13,7 +13,7 @@
 <u>*Execute the `docker-login-output` from the above command*</u>
 
 
-#### 3. Execute the below sequence of commands to push the latest-code-docker-image to ECR `171774164293.dkr.ecr.us-east-1.amazonaws.com/` as `mcd-metaflow:tg01`.
+#### 3. Execute the below sequence of commands to push the latest-code-docker-image to ECR `171774164293.dkr.ecr.us-east-1.amazonaws.com/` as `shipment_forecast:metaflow01`.
 
 ##### 3.1. Go to the root-directory
 ```bash
@@ -22,15 +22,15 @@
 
 ##### 3.2. Remove the already available tagged-image
 ```bash
-    docker rmi --force 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow:tg01
+    docker rmi --force 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01
 ```
 
 ##### 3.3. Build docker image without cache
 ```bash
-    docker build -f deploy/docker/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow:tg01 .
+    docker build -f deploy/docker/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01 .
 ```
 
 ##### 3.4. Push the built docker image to ECR
 ```bash
-    docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow:tg01
+    docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01
 ```

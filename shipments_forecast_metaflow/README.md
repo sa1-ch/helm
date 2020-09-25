@@ -1,56 +1,83 @@
-# metaflow-template
+# Shipment_Forecasting -- Metaflow -- Code
 
-conda env create -f deploy/env/py37_dev.yml -n metaflow-env
+## 1. Setup
+
+Create environment with requirements
 
 ```bash
-metaflow tutorials pull
-metaflow tutorials list
-metaflow tutorials info 00-helloworld
+    conda env create -f deploy/env/cpu/dev.yml -n ship-mf-env
+    conda activate ship-mf-env
+    sudo yum install graphviz
+```  
+    
 
-python helloworld.py show
-python helloworld.py run
-
-metaflow status
+## 2. Configure aws cli for boto3
+```bash
+    aws configure
 ```
 
-```
-aws configure
-cat ~/.metaflowconfig/config
-
-metaflow configure aws
-mcd-dev-1-metaflows3bucket-qe8cybgiof9s
-
+## 3. Build Shipments-Docker into ECR
+```bash
+    # Please refer deploy/docker/README.md
 ```
 
+----------------------------------------------------------------
 
-aws ecr get-login --no-include-email --region us-east-1 | bash
+## 4. Configure metaflow with aws
+```bash
+    metaflow configure aws  # Please refer values in deploy/cloud-formation/config.json
 
-aws ecr get-login-password
-
-sudo docker login -u AWS -p $(aws ecr get-login-password) https://171774164293.dkr.ecr.us-east-1.amazonaws.com
-sudo docker build -f deploy/container/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow:mf03 .
-sudo docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow:mf03
-
-
-python helloworld.py run --with batch
-
-python helloworld.py --with retry step-functions create
-python helloworld.py step-functions trigger
-
-https://docs.metaflow.org/getting-started/tutorials/season-1-the-local-experience/episode04
-conda config --add channels conda-forge
-
-python helloworld.py resume --origin-run-id sfn-1568bb71-2fb7-4560-80b8-0b3f2b5e8cbd --with batch
+    cat ~/.metaflowconfig/config.json  # Verify the setup using this command
+```
 
 
-metaflow-template$ python helloworld.py output-dot | dot -Tpng -o graph.png
+## 5. Push Shipments' docker to ECR
+```bash
+    sudo docker login -u AWS -p $(aws ecr get-login-password) https://171774164293.dkr.ecr.us-east-1.amazonaws.com
+    sudo docker build -f deploy/docker/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow-batch:tg03 .
+    sudo docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow-batch:tg03
+```
 
-python helloworld.py step-functions list-runs
 
-python helloworld.py resume --origin-run-id sfn-1568bb71-2fb7-4560-80b8-0b3f2b5e8cbd
+## 6. Run dag locally
+```bash
+    python shipments_flow.py show
+    python shipments_flow.py run
+```
 
-python debug.py resume --origin-run-id sfn-5ca85f96-8508-409d-a5f5-b567db1040c5 --with batch
+
+## 7. Run dag in batch
+```bash
+    python shipments_flow.py show
+    python shipments_flow.py run --with batch
+```
 
 
-python helloworld.py step-functions trigger --origin-run-id sfn-1568bb71-2fb7-4560-80b8-0b3f2b5e8cbd
+## 8. Create dag as Step-Function
+```bash
+    python shipments_flow.py --with retry step-functions create --max-workers 1000
+```
 
+# 9. Trigger Step-Function
+```bash
+    python shipments_flow.py step-functions trigger
+```
+
+
+## 10. List runs from Step-Function
+```bash
+    python shipments_flow.py step-functions list-runs
+```
+
+## 11. Resume Failed dag, Run-Id <<sfn-1568bb71-2fb7-4560-80b8-0b3f2b5e8cbd>>
+```bash
+    python shipments_flow.py resume --origin-run-id sfn-1568bb71-2fb7-4560-80b8-0b3f2b5e8cbd --with batch
+```
+
+
+## 12. Export dag as Image
+```bash
+   python shipments_flow.py output-dot | dot -Tpng -o graph.png
+```
+
+## 13. To know job stats, pls refer, `job_status.ipynb`
