@@ -14,7 +14,7 @@ run_params:
     model_name: DeepAREstimator # Deep_State=DeepStateEstimator, Deep_AR=DeepAREstimator, Prophet=ProphetPredictor
     register_model: False
     training: full
-    datapath: s3://mcd-dev-1-metaflows3bucket-lyv8kblmqdjy/shipments/inputs/demo-data
+    datapath: s3://mcd-dev-2-metaflows3bucket-1vs6l6gj1wbgh/inputs/demo-data
     iter_load_all_data: False #[False: Reads one data at a time, True: Loads all data in memory]
     seed_value: 10
     data_start_date: 2015-06-01
@@ -42,7 +42,7 @@ run_params:
     evaluation:
         eval: sequential
         num_samples: 100
-        forecastpath: s3://mcd-dev-1-metaflows3bucket-lyv8kblmqdjy/shipments/forecast-results
+        forecastpath: s3://mcd-dev-2-metaflows3bucket-1vs6l6gj1wbgh/forecast-results
         run_eval_in_train: False
         run_eval_in_score: True
         data_set_length: 87104 # Total no of TS in the dataset

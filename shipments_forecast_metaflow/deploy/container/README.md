@@ -27,7 +27,7 @@
 
 ##### 3.3. Build docker image without cache
 ```bash
-    docker build -f deploy/docker/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01 .
+    docker build -f deploy/container/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01 .
 ```
 
 ##### 3.4. Push the built docker image to ECR

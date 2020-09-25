@@ -23,8 +23,8 @@ def print_list(lst, temp_string=""):
 
 class ShipmentsDemoTestOne(FlowSpec):
     deployment_info = Parameter("deployment_info", type=JSONType, default=deployment_info)
-    app_cfg = Parameter("app_cfg", type=str, default="s3://mcd-dev-1-metaflows3bucket-lyv8kblmqdjy/inputs/app_cfg.yml")
-    job_cfg = Parameter("job_cfg", type=str, default="s3://mcd-dev-1-metaflows3bucket-lyv8kblmqdjy/inputs/job_cfg.yml")
+    app_cfg = Parameter("app_cfg", type=str, default="s3://mcd-dev-2-metaflows3bucket-1vs6l6gj1wbgh/inputs/app_cfg.yml")
+    job_cfg = Parameter("job_cfg", type=str, default="s3://mcd-dev-2-metaflows3bucket-1vs6l6gj1wbgh/inputs/job_cfg.yml")
 
 
     @resources(cpu=2, memory=1000)
@@ -35,7 +35,7 @@ class ShipmentsDemoTestOne(FlowSpec):
             app_cfg=self.app_cfg, 
             job_cfg=self.job_cfg
         )
-        print_list(self.pipeline_list)
+        #print_list(self.pipeline_list)
         self.next(self.parent_task, foreach="pipeline_list")
 
 

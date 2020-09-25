@@ -5,9 +5,9 @@
 Create environment with requirements
 
 ```bash
-    conda env create -f deploy/env/cpu/dev.yml -n ship-mf-env
+    conda env create -f deploy/env/py37_dev.yml -n ship-mf-env
     conda activate ship-mf-env
-    sudo yum install graphviz
+    sudo apt install graphviz
 ```  
     
 
@@ -34,8 +34,8 @@ Create environment with requirements
 ## 5. Push Shipments' docker to ECR
 ```bash
     sudo docker login -u AWS -p $(aws ecr get-login-password) https://171774164293.dkr.ecr.us-east-1.amazonaws.com
-    sudo docker build -f deploy/docker/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow-batch:tg03 .
-    sudo docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/mcd-metaflow-batch:tg03
+    sudo docker build -f deploy/container/Dockerfile -t 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01 .
+    sudo docker push 171774164293.dkr.ecr.us-east-1.amazonaws.com/shipment_forecast:metaflow01
 ```
 
 
@@ -55,7 +55,7 @@ Create environment with requirements
 
 ## 8. Create dag as Step-Function
 ```bash
-    python shipments_flow.py --with retry step-functions create --max-workers 1000
+    python shipments_flow.py --with retry step-functions create
 ```
 
 # 9. Trigger Step-Function
