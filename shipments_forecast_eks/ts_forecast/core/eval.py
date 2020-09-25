@@ -71,8 +71,7 @@ def get_score_files_recursively(task):
     resource = Core.config.credentials.tld_s3.protocol()
     bucket_name = (
         Core.config.credentials.tld_s3.prefix()
-        .replace(Core.config.credentials.tld_s3.protocol(), "")
-        .replace("://", "")
+        .replace(f"{Core.config.credentials.tld_s3.protocol()}://", "")
     )
     forecast_out_path = get_forecast_path_parent_score(task)
     bucket_prefix = forecast_out_path.replace(
