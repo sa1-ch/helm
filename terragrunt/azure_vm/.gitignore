@@ -1,0 +1,9 @@
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Local .terraform directories
+**/.terraform/*
+
+# Local .terragrunt directories
+**/.terragrunt-cache/*
