@@ -40,6 +40,6 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     }
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment_tag
     }
 }

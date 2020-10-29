@@ -16,6 +16,6 @@ resource "azurerm_storage_account" "mystorageaccount" {
     account_replication_type    =  var.account_replication_type 
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment_tag
     }
 }

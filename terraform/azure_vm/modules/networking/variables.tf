@@ -18,7 +18,7 @@ variable "subnet_name" {
 
 variable "subnet_ip" {
   description = " IP for the subnet"
-  default = "10.0.2.0/24"
+  default = "10.0.1.0/24"
   type = string
 }
 
@@ -86,5 +86,17 @@ variable nic_name {
   type        = string
   default     = "myNIC"
   description = "name for NIC"
+}
+
+variable environment_tag {
+  type        = string
+  default     = "Terraform Demo"
+  description = "environment tag"
+}
+
+variable source_address_prefix {
+  type        = list(string)
+  default     = ["182.75.175.34/32","1.22.172.58/32"]
+  description = "ips for ingress"
 }
 

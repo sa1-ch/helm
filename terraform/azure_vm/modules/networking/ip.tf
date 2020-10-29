@@ -5,6 +5,6 @@ resource "azurerm_public_ip" "myterraformpublicip" {
     allocation_method            =  var.allocation_method 
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment_tag
     }
 }

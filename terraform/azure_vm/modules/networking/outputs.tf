@@ -4,7 +4,7 @@ output "vn_name" {
 }
 
 output nic_id {
-  value       = azurerm_network_interface.myterraformnic.id
+  value       = azurerm_network_interface.terraformnic.id
   description = "nic id"
 }
 

@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "myterraformnic" {
+resource "azurerm_network_interface" "terraformnic" {
     name                      =  var.nic_name 
     location                     =  data.terraform_remote_state.resource_group.outputs.location
     resource_group_name          =  data.terraform_remote_state.resource_group.outputs.resource_group_name
@@ -11,6 +11,6 @@ resource "azurerm_network_interface" "myterraformnic" {
     }
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment_tag
     }
 }

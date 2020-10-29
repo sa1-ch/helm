@@ -1,8 +1,8 @@
 resource "azurerm_resource_group" "myterraformgroup" {
-    name     = "myTerraformResourceGroup"
-    location = "eastus"
+    name     = var.rg_name
+    location = var.location
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment_tag
     }
 }

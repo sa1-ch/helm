@@ -10,3 +10,8 @@ variable account_replication_type {
   description = "account replication type for storage account"
 }
 
+variable environment_tag {
+  type        = string
+  default     = "Terraform Demo"
+  description = "environment tag"
+}

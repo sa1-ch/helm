@@ -69,6 +69,11 @@ variable disable_password_authentication {
   default     = true
 }
 
+variable environment_tag {
+  type        = string
+  default     = "Terraform Demo"
+  description = "environment tag"
+}
 
 
 
