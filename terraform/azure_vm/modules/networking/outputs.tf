@@ -8,3 +8,7 @@ output nic_id {
   description = "nic id"
 }
 
+output name {
+  value       = azurerm_virtual_network.myterraformnetwork.address_space
+  description = "IP of the vm"
+}
