@@ -1,0 +1,15 @@
+{
+    "METAFLOW_BATCH_CONTAINER_IMAGE": "mcd-metaflow-batch:tg03",
+    "METAFLOW_BATCH_CONTAINER_REGISTRY": "171774164293.dkr.ecr.us-east-1.amazonaws.com",
+    "METAFLOW_BATCH_JOB_QUEUE": "job-queue-mcd-dev-3",
+    "METAFLOW_DATASTORE_SYSROOT_S3": "s3://mcd-dev-3-metaflows3bucket-1xfz3783699bs/artifacts",
+    "METAFLOW_DATATOOLS_SYSROOT_S3": "s3://mcd-dev-3-metaflows3bucket-1xfz3783699bs/artifacts/data",
+    "METAFLOW_DEFAULT_DATASTORE": "s3",
+    "METAFLOW_DEFAULT_METADATA": "service",
+    "METAFLOW_ECS_S3_ACCESS_IAM_ROLE": "arn:aws:iam::171774164293:role/mcd-dev-3-BatchS3TaskRole-1GPWKKKG7SPD2",
+    "METAFLOW_EVENTS_SFN_ACCESS_IAM_ROLE": "arn:aws:iam::171774164293:role/mcd-dev-3-EventBridgeRole-1R2UDXWZSPTYZ",
+    "METAFLOW_SERVICE_INTERNAL_URL": "http://mcd-dev-NLB-1GBVBH4PHWNHU-5d80df95b69bff86.elb.us-east-1.amazonaws.com/",
+    "METAFLOW_SERVICE_URL": "https://6n1qs3ql37.execute-api.us-east-1.amazonaws.com/api/",
+    "METAFLOW_SFN_DYNAMO_DB_TABLE": "mcd-dev-3-StepFunctionsStateDDB-1C5F1ENIX66D9",
+    "METAFLOW_SFN_IAM_ROLE": "arn:aws:iam::171774164293:role/mcd-dev-3-StepFunctionsRole-E0CQIFEYOC16"
+}
